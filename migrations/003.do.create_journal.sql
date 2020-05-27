@@ -1,8 +1,8 @@
 CREATE TABLE "journal" (
     "id" SERIAL PRIMARY KEY,
     "entry" text NOT NULL,
-    "tasks" NUMERIC,
+    "tasks" text NOT NULL,
     "emotion" NUMERIC,
-    "user_id" INTEGER REFERENCES "user" (id) ON DELETE CASCADE NOT NULL,
-    "date_created" TIMESTAMPTZ DEFAULT Now(),
+    "user_id" INTEGER REFERENCES "user_table" (id) ON DELETE CASCADE NOT NULL,
+    "date_created" TIMESTAMPTZ DEFAULT Now()
 )
