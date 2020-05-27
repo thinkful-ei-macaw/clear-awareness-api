@@ -1,20 +1,21 @@
-require('dotenv').config();
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
-const helmet = require('helmet');
-const {NODE_ENV} = require('./config');
+require("dotenv").config({ path: "../.env" });
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
+const helmet = require("helmet");
+const { NODE_ENV } = require("./config");
 // const winston = require('winston');
-const {API_TOKEN}=require('./config');
-
+const { API_TOKEN } = require("./config");
 
 const app = express();
 
-app.use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
-  skip: () => NODE_ENV === 'test',
-}))
-app.use(cors())
-app.use(helmet())
+app.use(
+  morgan(NODE_ENV === "production" ? "tiny" : "common", {
+    skip: () => NODE_ENV === "test",
+  })
+);
+app.use(cors());
+app.use(helmet());
 
 // app.use('/api/auth', authRouter)
 // app.use('/api/user', userRouter)
@@ -68,9 +69,8 @@ app.use(helmet())
 //     logger.error(`Unauthorized request to path: ${req.path}`);
 //     return res.status(401).json({ error: 'Unauthorized request' })
 //   }
- 
+
 //   next()
 // })
-    
 
 module.exports = app;
