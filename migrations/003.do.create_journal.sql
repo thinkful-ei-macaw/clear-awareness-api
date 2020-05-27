@@ -3,6 +3,6 @@ CREATE TABLE "journal" (
     "entry" text NOT NULL,
     "tasks" text NOT NULL,
     "emotion" NUMERIC,
-    "user_id" INTEGER REFERENCES "user_table" (id) ON DELETE CASCADE NOT NULL,
+    "user_id" INTEGER REFERENCES "user" (id) ON DELETE CASCADE NOT NULL,
     "date_created" TIMESTAMPTZ DEFAULT Now()
 )
