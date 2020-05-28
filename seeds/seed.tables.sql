@@ -1,9 +1,9 @@
 BEGIN;
 TRUNCATE 
-"user_table",
+"user",
 "journal",
 "sleep";
-INSERT INTO "user_table" ("id", "username", "name", "password")
+INSERT INTO "user" ("id", "username", "name", "password")
 VALUES
   (
     1,

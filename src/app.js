@@ -3,9 +3,12 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
+const errorHandler = require("./middleware/error-handler");
 const { NODE_ENV } = require("./config");
 // const winston = require('winston');
 const { API_TOKEN } = require("./config");
+const authRouter = require("./auth/auth-router");
+const userRouter = require("./user/user-router");
 
 const app = express();
 
@@ -17,10 +20,8 @@ app.use(
 app.use(cors());
 app.use(helmet());
 
-// app.use('/api/auth', authRouter)
-// app.use('/api/user', userRouter)
-
-// app.use(errorHandler)
+// app.use("/api/auth", authRouter);
+// app.use("/api/user", userRouter);
 
 // const logger = winston.createLogger({
 //   level: 'info',
@@ -44,9 +45,11 @@ app.use(helmet());
 // app.use(helmet());
 // app.use(cors());
 
-// app.get('/', (req,res)=> {
-//     res.send('Hello, world!')
-// })
+app.get("/", (req, res) => {
+  res.send("Hello, world!");
+});
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 // app.use(bookmarksRouter)
 // app.use(function errorHandler(error, req, res, next) {
 //  let response
@@ -72,5 +75,6 @@ app.use(helmet());
 
 //   next()
 // })
+app.use(errorHandler);
 
 module.exports = app;

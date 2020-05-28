@@ -1,5 +1,13 @@
-require("dotenv").config();
-console.log(process.env.DATABASE_NAME);
+const path = require("path");
+if (process.env.NODE_ENV === "test") {
+  require("dotenv").config({ path: path.resolve(process.cwd(), ".env.test") });
+  console.log("omg");
+} else {
+  require("dotenv").config();
+}
+
+console.log(process.env.MIGRATION_DATABASE_NAME);
+console.log(process.env.NODE_ENV);
 module.exports = {
   migrationsDirectory: "migrations",
   driver: "pg",

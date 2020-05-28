@@ -25,7 +25,7 @@ authRouter
 
       if (!dbUser)
         return res.status(400).json({
-          error: 'Incorrect username or password',
+          error: 'Invalid username or password',
         })
 
       const compareMatch = await AuthService.comparePasswords(
@@ -35,7 +35,7 @@ authRouter
 
       if (!compareMatch)
         return res.status(400).json({
-          error: 'Incorrect username or password',
+          error: 'Invalid username or password',
         })
 
       const sub = dbUser.username
