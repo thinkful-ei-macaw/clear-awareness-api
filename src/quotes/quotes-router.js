@@ -1,6 +1,6 @@
 const express = require('express')
 const uuid = require('uuid/v4')
-const { quotes } = require('../store')
+const  quotes  = require('../store')
 // const { requireAuth } = require("../middleware/jwt-auth");
 
 const quotesRouter = express.Router()
@@ -8,7 +8,7 @@ const bodyParser = express.json();
 
 quotesRouter
   .route("/")
-  .get(bodyParser, async (req, res) => {
+  .get(bodyParser, (req, res) => {
         res.json({quotations: quotes.quotes});
     }
   )
