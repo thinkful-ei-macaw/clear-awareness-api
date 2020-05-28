@@ -9,6 +9,7 @@ const { NODE_ENV } = require("./config");
 const { API_TOKEN } = require("./config");
 const authRouter = require("./auth/auth-router");
 const userRouter = require("./user/user-router");
+const quotesRouter = require('./quotes/quotes-router')
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/quotes", quotesRouter);
 // app.use(bookmarksRouter)
 // app.use(function errorHandler(error, req, res, next) {
 //  let response
