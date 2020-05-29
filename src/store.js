@@ -18,7 +18,7 @@ const quotes=[
     },
     {
         id: uuid(),
-        quotation: "“He who would do good to another must do it in Minute Particulars; General Good is the plea of the scoundrel, hypocrite and flatterer: For Art and Science cannot exist but in minutely organized Particulars.",
+        quotation: "He who would do good to another must do it in Minute Particulars; General Good is the plea of the scoundrel, hypocrite and flatterer: For Art and Science cannot exist but in minutely organized Particulars.",
         author: "William Blake",
     },
     {
