@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -7,7 +7,8 @@ const errorHandler = require("./middleware/error-handler");
 const { NODE_ENV } = require("./config");
 const authRouter = require("./auth/auth-router");
 const userRouter = require("./user/user-router");
-const quotesRouter = require('./quotes/quotes-router')
+const quotesRouter = require("./quotes/quotes-router");
+const journalRouter = require("./journal/journal-router");
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/quotes", quotesRouter);
+app.use("/api/journal", journalRouter);
 
 app.use(errorHandler);
 
