@@ -21,13 +21,14 @@ journalRouter
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const user_id = req.user.id;
-    const { entry, tasks, emotion, mindful } = req.body;
+    const { entry, tasks, emotions, mindful, date_created } = req.body;
     JournalService.insert(req.app.get("db"), user_id, {
       user_id,
       entry,
       tasks,
+      date_created,
       mindful,
-      emotion,
+      emotions,
     }).then((journal) => {
       res.status(201).json(journal);
     });
@@ -38,35 +39,33 @@ journalRouter
   .get((req, res) => {
     res.json(JournalService.serializeJournal(res.journal));
   });
-journalRouter.route("/:journalId").delete((req, res, next) => {
-  JournalService.delete(req.app.get("db"), req.params.journalId)
-    .then(() => {
-      res.status(204).end();
-    })
-    .catch(next);
-})
-  .patch(jsonBodyParser, (req,res,next)=>{
-    const knexInstance = req.app.get('db');
-    const user_id = req.user.id
-    const {entry,tasks,emotions, mindful} = req.body;
-    const updatedJournal={entry,tasks,emotions,mindful};
+journalRouter
+  .route("/")
+  .delete((req, res, next) => {
+    JournalService.delete(req.app.get("db"), req.params.journalId)
+      .then(() => {
+        res.status(204).end();
+      })
+      .catch(next);
+  })
+  .patch(requireAuth, jsonBodyParser, (req, res, next) => {
+    const knexInstance = req.app.get("db");
+    const user_id = req.user.id;
+    const { entry, tasks, emotions, mindful, id } = req.body;
+    const updatedJournal = { entry, tasks, emotions, mindful };
     const numValues = Object.values(updatedJournal).filter(Boolean).length;
-    if(numValues===0){
+    if (numValues === 0) {
       return res.status(400).json({
         error: {
-          message: `Request body must contain 'entry', 'tasks', 'mindful', or 'emotions'`
-        }
+          message: `Request body must contain 'entry', 'tasks', 'mindful', or 'emotions'`,
+        },
       });
     }
-    JournalService.update(knexInstance,date, {entry,tasks,mindful,emotions}, user_id)
-    .then(numValues=>{
-      res.status(204).end();
-    })
-    .catch(next);
-
-  
-  })
-
-
+    JournalService.update(knexInstance, updatedJournal, id)
+      .then((numValues) => {
+        res.status(204).end();
+      })
+      .catch(next);
+  });
 
 module.exports = journalRouter;

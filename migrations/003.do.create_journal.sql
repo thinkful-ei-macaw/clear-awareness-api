@@ -5,5 +5,5 @@ CREATE TABLE "journal" (
     "mindful" text NOT NULL,
     "emotions" NUMERIC,
     "user_id" INTEGER REFERENCES "user" (id) ON DELETE CASCADE NOT NULL,
-    "date_created" TIMESTAMPTZ DEFAULT Now()
+    "date_created" text NOT NULL
 )

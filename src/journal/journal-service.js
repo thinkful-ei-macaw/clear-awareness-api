@@ -4,7 +4,14 @@ const JournalService = {
   getAllJournals(db, user_id) {
     return db
       .from("journal")
-      .select("journal.entry", "journal.tasks", "journal.emotion", "journal.mindful")
+      .select(
+        "journal.id",
+        "journal.entry",
+        "journal.tasks",
+        "journal.emotions",
+        "journal.mindful",
+        "journal.date_created"
+      )
       .where("journal.user_id", user_id);
   },
   insert(db, user_id, journal) {
@@ -19,19 +26,22 @@ const JournalService = {
       entry: journal.entry,
       tasks: journal.tasks,
       mindful: journal.mindful,
-      emotion: journal.emotion,
+      emotions: journal.emotions,
       date_created: new Date(journal.date_created),
     };
   },
   delete(knex, id) {
     return knex.from("journal").where("id", id).delete();
   },
-  update(knex,date,data,user_id){
-    return knex
-    .from('journal')
-    .where('id',id).where('jounral.user_id', user_id)
-    .update(data)
-  }
+  update(knex, data, id) {
+    return (
+      knex("journal")
+        .where("id", id)
+        // .where("jounral.user_id", user_id)
+        // .where("date_created", date)
+        .update(data)
+    );
+  },
 };
 
 module.exports = JournalService;
