@@ -1,5 +1,5 @@
 const express = require("express");
-const path = require("path");
+// const path = require("path");
 const JournalService = require("./journal-service");
 const { requireAuth } = require("../middleware/jwt-auth");
 
