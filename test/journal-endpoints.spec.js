@@ -6,7 +6,7 @@ const helpers = require("./test-helpers");
 describe('Journal Endpoints', function(){
     let db
 
-    const {testJournals}=helpers.makeJournalsFixture()
+    const {testJournal}=helpers.makeJournalFixture()
 
     before('make knex instance', () => {
   db= knex({
@@ -21,5 +21,48 @@ describe('Journal Endpoints', function(){
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  describe(`GET /api/journal`, ()=>)
+  describe(`GET /api/journal`, ()=>{
+      it.only(`responds with 200 and an empty list`, ()=>{
+          return supertest(app)
+          .get('/api/journal')
+          .expect(200, [])
+      })
+
+  })
 })
+  describe(`POST /api/journal`, ()=>{
+      beforeEach('insert a journal', ()=>
+        helpers.seedJournalTables(
+            db,
+            testJournal
+        )
+      )
+      it(`creates a journal, rsponding with 201 and the new project`, function(){
+          this.retries(3)
+          const testJournal=testJournal[0]
+          const newJournal={
+            entry:'new test entry',
+            tasks: 'new test task',
+            mindful: 'new test mindful act',
+            emotion: 3,
+            sleep_hours: 10
+          }
+          return supertest(app)
+            .post(`/api/journal`)
+            .send(newJournal)
+            .expect(201)
+            .expect(res=>{console.log(res.body)
+            .expect(res.body.rowCount).to.equal(1)
+            })
+            .expect(res=>
+              db
+                .from('journal')
+                .select('*')
+                .where({id: res.body.id})
+                .first()
+                .then(row =>{
+                    
+                })    
+                )
+      })
+  })
