@@ -10,7 +10,8 @@ const JournalService = {
         "journal.tasks",
         "journal.emotions",
         "journal.mindful",
-        "journal.date_created"
+        "journal.date_created",
+        "journal.sleep_hours"
       )
       .where("journal.user_id", user_id);
   },
@@ -24,7 +25,8 @@ const JournalService = {
         "journal.tasks",
         "journal.emotions",
         "journal.mindful",
-        "journal.date_created"
+        "journal.date_created",
+        "journal.sleep_hours"
       )
       .where({
         "journal.user_id": user_id,
@@ -46,6 +48,7 @@ const JournalService = {
       mindful: journal.mindful,
       emotions: journal.emotions,
       date_created: journal.date_created,
+      sleep_hours: journal.sleep_hours,
     };
   },
   delete(knex, id) {
