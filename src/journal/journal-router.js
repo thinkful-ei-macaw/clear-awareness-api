@@ -50,7 +50,7 @@ journalRouter
   })
   .patch(requireAuth, jsonBodyParser, (req, res, next) => {
     const knexInstance = req.app.get("db");
-    const user_id = req.user.id;
+    //const user_id = req.user.id;
     const { entry, tasks, emotions, mindful, id } = req.body;
     const updatedJournal = { entry, tasks, emotions, mindful };
     const numValues = Object.values(updatedJournal).filter(Boolean).length;
