@@ -94,6 +94,22 @@ function seedUsers(db, users) {
   });
 }
 
+function makeJournalsFixture(){
+  const testJournals = makeJournalsArray()
+  return {testJournals}
+}
+
+function makeJournalsArray(){
+  return [{
+    id: 1,
+    entry: 'Test Entry',
+    tasks: 'Test Task',
+    mindful:'Test Mindful Act',
+    emotions:4,
+    date_created: new Date('2029-01-22T16:28:32.615Z'),
+  }]
+}
+
 
 
 module.exports = {
@@ -102,4 +118,6 @@ module.exports = {
   makeAuthHeader,
   cleanTables,
   seedUsers,
+  makeJournalsArray,
+  makeJournalsFixture
 };
