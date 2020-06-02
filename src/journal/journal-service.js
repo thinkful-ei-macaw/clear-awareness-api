@@ -14,6 +14,24 @@ const JournalService = {
       )
       .where("journal.user_id", user_id);
   },
+
+  getSpecificJournal(db, journalDate, user_id) {
+    return db
+      .from("journal")
+      .select(
+        "journal.id",
+        "journal.entry",
+        "journal.tasks",
+        "journal.emotions",
+        "journal.mindful",
+        "journal.date_created"
+      )
+      .where({
+        "journal.user_id": user_id,
+        "journal.date_created": journalDate,
+      });
+  },
+
   insert(db, user_id, journal) {
     return db("journal")
       .insert(journal)
@@ -27,7 +45,7 @@ const JournalService = {
       tasks: journal.tasks,
       mindful: journal.mindful,
       emotions: journal.emotions,
-      date_created: new Date(journal.date_created),
+      date_created: journal.date_created,
     };
   },
   delete(knex, id) {

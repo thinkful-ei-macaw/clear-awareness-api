@@ -8,13 +8,15 @@ const jsonBodyParser = express.json();
 
 journalRouter
   .route("/")
-  .get(requireAuth, (req, res, next) => {
+  .get(requireAuth, jsonBodyParser, (req, res, next) => {
     try {
-      JournalService.getAllJournals(req.app.get("db"), req.user.id).then(
-        (journals) => {
-          res.json(journals.map(JournalService.serializeJournal));
-        }
-      );
+      JournalService.getSpecificJournal(
+        req.app.get("db"),
+        req.body.date_created,
+        req.user.id
+      ).then((journals) => {
+        res.json(journals);
+      });
     } catch (error) {
       next(error);
     }
@@ -34,9 +36,9 @@ journalRouter
     });
   });
 journalRouter
-  .route("/:journalId")
+  .route("/:journalDate")
   .all(requireAuth)
-  .get((req, res) => {
+  .get(requireAuth, (req, res) => {
     res.json(JournalService.serializeJournal(res.journal));
   });
 journalRouter
