@@ -60,7 +60,6 @@ function cleanTables(db) {
     trx
       .raw(
         `TRUNCATE
-        "sleep",
         "journal",
         "user"`
       )
@@ -94,6 +93,34 @@ function seedUsers(db, users) {
   });
 }
 
+function makeJournalFixture(){
+  const testJournal = makeJournalArray()
+  return {testJournal}
+}
+
+function makeJournalArray(){
+  return [{
+    id: 1,
+    entry: 'Test Entry',
+    tasks: 'Test Task',
+    mindful:'Test Mindful Act',
+    emotions:3,
+    sleep_hours: 13,
+    date_created: new Date('2029-01-22T16:28:32.615Z'),
+  }]
+}
+
+function seedJournalTables(db,journals){
+return db.transaction(async trx => {
+  await trx.into('journal').insert(journals)
+  await trx.raw(
+    `SELECT setval('journal_id_seq', ?)`,
+    [journals[journals.length-1].id],
+  )
+ 
+})
+}
+
 
 
 module.exports = {
@@ -102,4 +129,7 @@ module.exports = {
   makeAuthHeader,
   cleanTables,
   seedUsers,
+  makeJournalArray,
+  makeJournalFixture,
+  seedJournalTables,
 };
