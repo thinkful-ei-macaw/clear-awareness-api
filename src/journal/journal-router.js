@@ -9,14 +9,20 @@ const jsonBodyParser = express.json();
 journalRouter
   .route("/")
   .get(requireAuth, jsonBodyParser, (req, res, next) => {
+    console.log("this");
     try {
       JournalService.getSpecificJournal(
         req.app.get("db"),
         req.body.date_created,
         req.user.id
-      ).then((journals) => {
-        res.json(journals);
-      });
+      )
+        .then((journals) => {
+          res.json(journals);
+        })
+        .catch((e) => {
+          console.log(e);
+          res.status(500).send();
+        });
     } catch (error) {
       next(error);
     }
@@ -53,11 +59,22 @@ journalRouter.route("/sleep").get((req, res, next) => {
 journalRouter
   .route("/:journalDate")
   .all(requireAuth)
-  .get(requireAuth, (req, res) => {
-    res.json(JournalService.serializeJournal(res.journal));
+  .get(requireAuth, (req, res, next) => {
+    const date = req.params.journalDate;
+    JournalService.getSpecificJournal(req.app.get("db"), date, req.user.id)
+      .then((journal) => {
+        console.log("journal", journal);
+        //not guaranteed to return anything.. what if empty
+        if (journal.length === 0) {
+          return res.status(404).send("Not found");
+        }
+        res.json(JournalService.serializeJournal(journal[0]));
+      })
+      .catch(next);
   });
+
 journalRouter
-  .route("/")
+  .route("/:journalId")
   .delete((req, res, next) => {
     JournalService.delete(req.app.get("db"), req.params.journalId)
       .then(() => {
