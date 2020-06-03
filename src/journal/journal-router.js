@@ -1,5 +1,5 @@
 const express = require("express");
-// const path = require("path");
+// const path = require("path"); attempting an add
 const JournalService = require("./journal-service");
 const { requireAuth } = require("../middleware/jwt-auth");
 
@@ -7,7 +7,7 @@ const journalRouter = express.Router();
 const jsonBodyParser = express.json();
 
 journalRouter
-  .route("/all")
+  .route("/")
   .get(requireAuth, jsonBodyParser, (req, res, next) => {
     console.log("this");
     try {
