@@ -61,22 +61,20 @@ journalRouter
   .all(requireAuth)
   .get(requireAuth, (req, res, next) => {
     const date = req.params.journalDate;
-    JournalService.getSpecificJournal(
-      req.app.get("db"),
-      date,
-      req.user.id
-    ).then((journal) => {
-      console.log("journal", journal);
-      //not guaranteed to return anything.. what if empty
-      if(journal.length===0){
-        return res.status(404).send('Not found');
-      }
-      res.json(JournalService.serializeJournal(journal[0]));
-    }).catch(next);
+    JournalService.getSpecificJournal(req.app.get("db"), date, req.user.id)
+      .then((journal) => {
+        console.log("journal", journal);
+        //not guaranteed to return anything.. what if empty
+        if (journal.length === 0) {
+          return res.status(404).send("Not found");
+        }
+        res.json(JournalService.serializeJournal(journal[0]));
+      })
+      .catch(next);
   });
 
 journalRouter
-  .route("/")
+  .route("/:journalId")
   .delete((req, res, next) => {
     JournalService.delete(req.app.get("db"), req.params.journalId)
       .then(() => {
