@@ -1,5 +1,5 @@
 const express = require("express");
-// const path = require("path");
+// const path = require("path"); attempting an add
 const JournalService = require("./journal-service");
 const { requireAuth } = require("../middleware/jwt-auth");
 
@@ -11,18 +11,11 @@ journalRouter
   .get(requireAuth, jsonBodyParser, (req, res, next) => {
     console.log("this");
     try {
-      JournalService.getSpecificJournal(
-        req.app.get("db"),
-        req.body.date_created,
-        req.user.id
-      )
-        .then((journals) => {
-          res.json(journals);
-        })
-        .catch((e) => {
-          console.log(e);
-          res.status(500).send();
-        });
+      JournalService.getAllJournals(req.app.get("db"), req.user.id).then(
+        (journals) => {
+          res.json(journals.map(JournalService.serializeJournal));
+        }
+      );
     } catch (error) {
       next(error);
     }
@@ -49,13 +42,16 @@ journalRouter
       res.status(201).json(journal);
     });
   });
-journalRouter.route("/sleep").get((req, res, next) => {
-  JournalService.getAllJournals(req.app.get("db"))
-    .then((journals) => {
-      res.json(journals.map(JournalService.serializeJournal));
-    })
-    .catch(next);
-});
+journalRouter
+  .route("/sleep")
+  .all(requireAuth)
+  .get(requireAuth, jsonBodyParser, (req, res, next) => {
+    JournalService.getAllJournals(req.app.get("db"), req.user.id)
+      .then((journals) => {
+        res.json(journals.map(JournalService.serializeJournal));
+      })
+      .catch(next);
+  });
 journalRouter
   .route("/:journalDate")
   .all(requireAuth)
