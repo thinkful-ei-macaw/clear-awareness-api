@@ -59,7 +59,7 @@ journalRouter.route("/sleep").get((req, res, next) => {
 journalRouter
   .route("/:journalDate")
   .all(requireAuth)
-  .get(requireAuth, (req, res) => {
+  .get(requireAuth, (req, res, next) => {
     const date = req.params.journalDate;
     JournalService.getSpecificJournal(
       req.app.get("db"),
@@ -68,8 +68,11 @@ journalRouter
     ).then((journal) => {
       console.log("journal", journal);
       //not guaranteed to return anything.. what if empty
+      if(journal.length===0){
+        return res.status(404).send('Not found');
+      }
       res.json(JournalService.serializeJournal(journal[0]));
-    });
+    }).catch(next);
   });
 
 journalRouter
