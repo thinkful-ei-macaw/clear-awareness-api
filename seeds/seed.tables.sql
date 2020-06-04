@@ -2,7 +2,6 @@ BEGIN;
 TRUNCATE 
 "user",
 "journal",
-"sleep";
 INSERT INTO "user" ("id", "username", "name", "password")
 VALUES
   (
@@ -13,8 +12,8 @@ VALUES
     '$2a$10$fCWkaGbt7ZErxaxclioLteLUgg4Q3Rp09WW0s/wSLxDKYsaGYUpjG'
   );
 
-INSERT INTO "journal" ("id","entry","tasks", "user_id","emotion")
-VALUES(1,'example entry','example tasks', 1,4);
+INSERT INTO "journal" ("id","entry","tasks","mindful","sleep_hours","emotions","user_id")
+VALUES(1,'example entry','example tasks',"example mindfulness",1,4,3);
 
 END;
  

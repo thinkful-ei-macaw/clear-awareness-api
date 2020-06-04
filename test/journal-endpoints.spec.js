@@ -27,7 +27,7 @@ describe('Journal Endpoints', function(){
   beforeEach("insert users", () => helpers.seedUsers(db, testUsers));
 
   describe(`GET /api/journal`, ()=>{
-      it(`responds with 200`, ()=>{
+      it.only(`responds with 200`, ()=>{
           return supertest(app)
           .get('/api/journal')
           .set("Authorization",helpers.makeAuthHeader(testUsers[1]))
