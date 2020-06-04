@@ -27,7 +27,7 @@ describe('Journal Endpoints', function(){
   beforeEach("insert users", () => helpers.seedUsers(db, testUsers));
 
   describe(`GET /api/journal`, ()=>{
-      it.only(`responds with 200`, ()=>{
+      it(`responds with 200`, ()=>{
           return supertest(app)
           .get('/api/journal')
           .set("Authorization",helpers.makeAuthHeader(testUsers[1]))
@@ -35,17 +35,22 @@ describe('Journal Endpoints', function(){
       })
 
   })
-})
+
+
   describe(`POST /api/journal`, ()=>{
       beforeEach('insert a journal', ()=>
         helpers.seedJournalTables(
+
             db,
+            testUser,
             testJournal
+
         )
       )
-      it(`creates a journal, rsponding with 201 and the new project`, function(){
+      it.only(`creates a journal, responding with 201 and the new project`, function(){
           this.retries(3)
           const testJournal=testJournal[0]
+          const testUser=testUser[0]
           const newJournal={
             entry:'new test entry',
             tasks: 'new test task',
@@ -55,20 +60,22 @@ describe('Journal Endpoints', function(){
           }
           return supertest(app)
             .post(`/api/journal`)
+            .set("Authorization",helpers.makeAuthHeader(testUsers[1]))
             .send(newJournal)
             .expect(201)
             .expect(res=>{console.log(res.body)
             .expect(res.body.rowCount).to.equal(1)
             })
-            .expect(res=>
-              db
-                .from('journal')
-                .select('*')
-                .where({id: res.body.id})
-                .first()
-                .then(row =>{
+            // .expect(res=>
+            //   db
+            //     .from('journal')
+            //     .select('*')
+            //     .where({id: res.body.id})
+            //     .first()
+            //     .then(row =>{
                     
-                })    
-                )
+            //     })    
+            //     )
       })
   })
+})
