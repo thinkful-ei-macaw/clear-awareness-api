@@ -1,7 +1,7 @@
 BEGIN;
 TRUNCATE 
 "user",
-"journal",
+"journal";
 INSERT INTO "user" ("id", "username", "name", "password")
 VALUES
   (
@@ -13,7 +13,7 @@ VALUES
   );
 
 INSERT INTO "journal" ("id","entry","tasks","mindful","sleep_hours","emotions","user_id")
-VALUES(1,'example entry','example tasks',"example mindfulness",1,4,3);
+VALUES(1,'example entry','example tasks',"example mindfulness",1,4,1);
 
 END;
  
