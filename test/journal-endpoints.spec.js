@@ -3,11 +3,11 @@ const app = require("../src/app");
 const helpers = require("./test-helpers");
 
 // describe('Journal Endpoints')
-describe('Journal Endpoints', function(){
+describe.only('Journal Endpoints', function(){
     let db
     const testUsers=helpers.makeUsersArray()
-    const [testUser]= testUsers;
-    const {testJournal}=helpers.makeJournalFixture()
+    const testUser= testUsers[0];
+    const testJournals=helpers.makeJournalFixture()
 
     before('make knex instance', () => {
   db= knex({
@@ -18,13 +18,19 @@ describe('Journal Endpoints', function(){
   })
   after('disconnect from db', () => db.destroy())
 
-  before('cleanup', () => helpers.cleanTables(db))
+//   before('cleanup', () => helpers.cleanTables(db))
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  beforeEach("insert users", () => helpers.seedUsers(db, testUsers));
-
+  beforeEach(`insert a journal`, async ()=>{
+    await helpers.seedUsers(db,testUsers);
+    await helpers.seedJournalTables(
+        db,
+        testJournals
+    );
+    })
   describe(`GET /api/journal`, ()=>{
+      console.log((testUsers[1]))
       it(`responds with 200`, ()=>{
           return supertest(app)
           .get('/api/journal')
@@ -34,19 +40,17 @@ describe('Journal Endpoints', function(){
 
   })
   describe(`DELETE /api/journal/:journalID`, ()=>{
-    beforeEach(`insert users`, () => helpers.seedUsers(db, testUsers));
-      it.only(`should delete a journal`, ()=>{
+    it(`should delete a journal`, ()=>{
       return supertest(app)
-        .delete(`/api/journal/journalId`)
+        .delete(`/api/journal/${testJournals[0].id}`)
         .set("Authorization",helpers.makeAuthHeader(testUsers[1]))
         .expect(204)
-
+ 
        
     })
   })
   describe(`PATCH /api/journal/:journalDate`,()=>{
-    beforeEach(`insert users`, () => helpers.seedUsers(db, testUsers));
-    it.only(`should update journal when given valid data and id`, function(){
+    it(`should update journal when given valid data and id`, function(){
         const patchJournal={
             entry:'new test entry',
             tasks: 'new test task',
@@ -65,32 +69,25 @@ describe('Journal Endpoints', function(){
   })
 
   describe(`POST /api/journal`, ()=>{
-      beforeEach(`insert a journal`, ()=>
-        helpers.seedJournalTables(
-            db,
-            testUser,
-            testJournal
-        )
-      )
-      it.only(`creates a journal, responding with 201 and the new project`, function(){
-          this.retries(3)
-          const testJournal=testJournal[0]
-          const testUser=testUser[0]
+    // const {testJournal:testJournals}=helpers.makeJournalFixture()
+
+      it(`creates a journal, responding with 201 and the new project`, function(){
+        //   this.retries(3)
+         let testJournal=testJournals[0]
+          const testUser=testUsers[0]
           const newJournal={
             entry:'new test entry',
-            tasks: 'new test task',
+            tasks: ['new test task'],
             mindful: 'new test mindful act',
             emotion: 3,
             sleep_hours: 10
           }
           return supertest(app)
             .post(`/api/journal`)
-            .set("Authorization",helpers.makeAuthHeader(testUsers[1]))
+            .set("Authorization",helpers.makeAuthHeader(testUsers[0]))
             .send(newJournal)
             .expect(201)
-            .expect(res=>{console.log(res.body)
-            .expect(res.body.rowCount).to.equal(1)
-            })
+            
        
       })
       

@@ -95,14 +95,15 @@ function seedUsers(db, users) {
 
 function makeJournalFixture(){
   const testJournal = makeJournalArray()
-  return {testJournal}
+  return testJournal
 }
 
 function makeJournalArray(){
   return [{
+    user_id:1,
     id: 1,
     entry: 'Test Entry',
-    tasks: 'Test Task',
+    tasks: ['Test Task'],
     mindful:'Test Mindful Act',
     emotions:3,
     sleep_hours: 13,
