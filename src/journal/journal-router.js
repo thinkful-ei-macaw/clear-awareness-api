@@ -42,16 +42,7 @@ journalRouter
       res.status(201).json(journal);
     });
   });
-// journalRouter
-//   .route("/sleep")
-//   .all(requireAuth)
-//   .get(requireAuth, jsonBodyParser, (req, res, next) => {
-//     JournalService.getAllJournals(req.app.get("db"), req.user.id)
-//       .then((journals) => {
-//         res.json(journals.map(JournalService.serializeJournal));
-//       })
-//       .catch(next);
-//   });
+
 journalRouter
   .route("/:journalDate")
   .all(requireAuth)
