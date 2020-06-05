@@ -6,4 +6,5 @@ module.exports = {
     "postgresql://dunder_mifflin:password@localhost/clearawareness",
   JWT_SECRET: process.env.JWT_SECRET || "encryption-words-and-stuff",
   JWT_EXPIRY: process.env.JWT_EXPIRY || "3h",
+  API_KEY: process.env.X_RAPIDAPI_KEY
 };

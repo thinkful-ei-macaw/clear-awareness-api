@@ -9,6 +9,7 @@ const authRouter = require("./auth/auth-router");
 const userRouter = require("./user/user-router");
 const quotesRouter = require("./quotes/quotes-router");
 const journalRouter = require("./journal/journal-router");
+const apiRouter=require("./quotes/api");
 
 const app = express();
 
@@ -23,10 +24,12 @@ app.use(helmet());
 app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
+app.use("/quotes",apiRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/quotes", quotesRouter);
 app.use("/api/journal", journalRouter);
+
 
 app.use(errorHandler);
 

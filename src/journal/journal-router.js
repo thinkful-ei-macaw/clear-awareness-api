@@ -40,7 +40,7 @@ journalRouter
       sleep_hours,
     }).then((journal) => {
       res.status(201).json(journal);
-    });
+    })
   });
 
 journalRouter
