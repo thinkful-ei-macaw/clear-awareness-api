@@ -13,7 +13,10 @@ const JournalService = {
         "journal.date_created",
         "journal.sleep_hours"
       )
-      .where("journal.user_id", user_id);
+      .where("journal.user_id", user_id)
+      .orderBy("journal.date_created", "asc")
+      .limit(7)
+      .offset(0);
   },
 
   getSpecificJournal(db, journalDate, user_id) {
