@@ -41,6 +41,7 @@ const JournalService = {
       .returning("id");
   },
   serializeJournal(journal) {
+    console.log(journal);
     return {
       id: journal.id,
       entry: journal.entry,
@@ -55,13 +56,7 @@ const JournalService = {
     return knex.from("journal").where("id", id).delete();
   },
   update(knex, data, id) {
-    return (
-      knex("journal")
-        .where("id", id)
-        // .where("jounral.user_id", user_id)
-        // .where("date_created", date)
-        .update(data)
-    );
+    return knex("journal").where("id", id).update(data);
   },
 };
 
