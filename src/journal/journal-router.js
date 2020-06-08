@@ -1,5 +1,4 @@
 const express = require("express");
-// const path = require("path"); attempting an add
 const JournalService = require("./journal-service");
 const { requireAuth } = require("../middleware/jwt-auth");
 
@@ -38,9 +37,14 @@ journalRouter
       mindful,
       emotions,
       sleep_hours,
-    }).then((journal) => {
-      res.status(201).json(journal);
-    });
+    })
+      .then((journal) => {
+        res.status(201).json(journal);
+      })
+      .catch((err) => {
+        if (err.code === "22003") res.json({ error: "out of range" });
+        else next(err);
+      });
   });
 
 journalRouter
@@ -71,7 +75,6 @@ journalRouter
   })
   .patch(requireAuth, jsonBodyParser, (req, res, next) => {
     const knexInstance = req.app.get("db");
-    //const user_id = req.user.id;
     const { entry, tasks, emotions, mindful, id, sleep_hours } = req.body;
     const updatedJournal = { entry, tasks, emotions, mindful, sleep_hours };
     const numValues = Object.values(updatedJournal).filter(Boolean).length;
