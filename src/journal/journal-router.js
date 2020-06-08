@@ -20,6 +20,9 @@ journalRouter
     }
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
+    if (req.body.sleep_hours < 0) {
+      return res.status(400).send("Bad request");
+    }
     const user_id = req.user.id;
     const {
       entry,
