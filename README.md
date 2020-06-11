@@ -55,10 +55,10 @@ https://github.com/thinkful-ei-macaw/clear-awareness-client
 
 ![LandingPage](images/landing.png "Optional Title")
 ![Registration](/images/registration.png "Optional Title")
-![Dashboard](/images/dashboard.png "Optional Title")
-![journalForm](/images/journalentry.png "Optional Title")
-![editJournal](/images/editentry.png "Optional Title")
-![journal](/images/journal.png "Optional Title")
+![Dashboard](/images/Dashboard.png "Optional Title")
+![journalForm](/images/journalform.png "Optional Title")
+![editJournal](/images/journalF.png "Optional Title")
+![journal](/images/journalE.png "Optional Title")
 
 ## API Docs:
 
