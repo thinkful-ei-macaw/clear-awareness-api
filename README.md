@@ -44,7 +44,6 @@ https://github.com/thinkful-ei-macaw/clear-awareness-client
 
 ### Server:
 
-- ReactJs
 - NodeJs
 - Express
 - Knex
